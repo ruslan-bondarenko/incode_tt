@@ -82,7 +82,7 @@ const Board = () => {
       ) : null}
 
       {!!error &&
-        Object.values(filteredIssues).some((field) => field.length === 0) && (
+        Object.values(filteredIssues).every((field) => field.length === 0) && (
           <ErrorMsg error={error} />
         )}
     </Flex>
