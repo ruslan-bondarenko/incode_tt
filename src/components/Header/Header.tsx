@@ -11,6 +11,7 @@ const Header = () => {
 
   return (
     <div
+      data-testid="header"
       style={{
         display: "flex",
         flexDirection: "column",

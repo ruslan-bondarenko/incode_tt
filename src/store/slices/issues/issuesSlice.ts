@@ -24,10 +24,14 @@ const initialState: IssuesStateType = {
  repoInfo: null
 };
 
+type IFetchIssuesProps = {
+  url: string, 
+  query?: string
+}
 
 export const fetchIssues = createAsyncThunk(
  "issues/fetchIssues",
- async function (url: string = '', { rejectWithValue, dispatch }) {
+ async function ({url = '', query = ''}: IFetchIssuesProps, { rejectWithValue, dispatch }) {
    try {
     const [owner, repo] = url.split('https://github.com/')[1]?.split('/');
 
@@ -35,17 +39,13 @@ export const fetchIssues = createAsyncThunk(
       auth: process.env.GITHUB_TOKEN,
     });
 
-    return await octokit.request(`GET /repos/${owner}/${repo}/issues`, {
+    return await octokit.request(`GET /repos/${owner}/${repo}/issues${query ? '?' + query : ''}`, {
       owner,
       repo,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
     }).then((res) => {
       if (res.status !== 200) {
         throw new Error("Server Error!");
       }
-      dispatch(updateRepoInfo({name: owner, repo: { name: repo, url} }));
       return res.data;
     });
    } catch (error: unknown) {

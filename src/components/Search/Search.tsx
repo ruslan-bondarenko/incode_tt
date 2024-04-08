@@ -12,9 +12,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 const Search = () => {
-  const [value, setValue] = useState<string>(
-    "https://github.com/facebook/react"
-  );
+  const [value, setValue] = useState<string>("");
   const dispatch = useDispatch();
   const { filteredIssues, prevUrl, isLoading } = useSelector(
     (state: RootState) => state.issues
@@ -40,21 +38,21 @@ const Search = () => {
 
     if (Object.keys(parsedCurrData).includes(url)) {
       dispatch(updateFilteredIssues(parsedCurrData[url]));
-      const [owner, repo] = url.split("https://github.com/")[1]?.split("/");
-
-      dispatch(
-        updateRepoInfo({
-          name: owner,
-          repo: {
-            name: repo,
-            url,
-          },
-        })
-      );
     } else {
-      dispatch(fetchIssues(url) as any);
+      dispatch(fetchIssues({ url }) as any);
     }
 
+    const [owner, repo] = url.split("https://github.com/")[1]?.split("/");
+
+    dispatch(
+      updateRepoInfo({
+        name: owner,
+        repo: {
+          name: repo,
+          url,
+        },
+      })
+    );
     dispatch(updatePrevUrl(url));
   };
 

@@ -8,7 +8,7 @@ type Props = {
 
 const RepoInfo: FC<Props> = ({ info }) => {
   return (
-    <div style={{ padding: "0 2rem" }}>
+    <div data-testid="repoinfo" style={{ padding: "0 2rem" }}>
       <Breadcrumb
         items={[
           {
